@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#1d1626" />
+    <meta name="description" content="Ronda Civic: Hog Wild. Big Boy took Joanne. Pick Cannon, Lieu or Jordan and go get her back." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Ronda Civic: Hog Wild</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #1d1626; overflow: hidden; overscroll-behavior: none; }
+      body { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; font-family: sans-serif; }
+      #game { position: fixed; inset: 0; }
+      #loader, #rotate { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: #1d1626; color: #ffd84a; z-index: 10; font: 700 22px/1.2 system-ui, sans-serif; letter-spacing: 2px; text-align: center; padding: 24px; }
+      #loadtrack { width: min(60vw, 420px); height: 14px; border-radius: 8px; background: #3a3148; overflow: hidden; }
+      #loadbar { width: 0; height: 100%; background: #ffd84a; transition: width 0.1s; }
+      #rotate { display: none; z-index: 20; }
+      #rotate svg { width: 96px; height: 96px; }
+      @media (orientation: portrait) and (pointer: coarse) { #rotate { display: flex; } }
+      .promo-links { position: absolute; left: 0; right: 0; bottom: 6%; display: flex; gap: 2vw; justify-content: center; flex-wrap: wrap; z-index: 5; }
+      .promo-links a { font: 400 clamp(16px, 2.6vw, 34px) 'Bangers', sans-serif; letter-spacing: 1px; color: #1d1626; background: #35c2b4; border: 4px solid #1d1626; border-radius: 14px; padding: 0.35em 1em; text-decoration: none; box-shadow: 0 6px 0 #1d1626; }
+      .promo-links a:active { transform: translateY(4px); box-shadow: 0 2px 0 #1d1626; }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+    <div id="loader">
+      <div id="loadtext">RONDA CIVIC · TUNING UP</div>
+      <div id="loadtrack"><div id="loadbar"></div></div>
+    </div>
+    <div id="rotate">
+      <svg viewBox="0 0 96 96" fill="none" stroke="#ffd84a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><rect x="30" y="14" width="36" height="68" rx="6" /><path d="M10 58 a40 40 0 0 0 20 30 M30 88 l-10 -2 M30 88 l-2 -10" /></svg>
+      <div>TURN YOUR PHONE SIDEWAYS</div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

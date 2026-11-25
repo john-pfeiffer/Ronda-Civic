@@ -1,0 +1,36 @@
+{
+  "name": "ronda-civic-game",
+  "version": "0.1.0",
+  "description": "Ronda Civic: a single-level promo brawler",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "smoke": "node tests/smoke.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/john-pfeiffer/Ronda-Civic.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/john-pfeiffer/Ronda-Civic/issues"
+  },
+  "homepage": "https://github.com/john-pfeiffer/Ronda-Civic#readme",
+  "dependencies": {
+    "@fontsource/bangers": "^5.3.0",
+    "@fontsource/permanent-marker": "^5.3.0",
+    "phaser": "^4.2.1"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.2"
+  },
+  "private": true,
+  "type": "module"
+}
