@@ -194,7 +194,7 @@ export class Hud extends Phaser.Scene {
   }
 
   update(_t: number, delta: number): void {
-    controls.update();
+    controls.update(this.game.loop.frame);
     this.t += delta;
     if (controls.consume('pause')) this.togglePause();
     const lv = this.level;

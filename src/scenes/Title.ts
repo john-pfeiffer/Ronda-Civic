@@ -63,7 +63,7 @@ export class Title extends Phaser.Scene {
   }
 
   update(_t: number, delta: number): void {
-    controls.update();
+    controls.update(this.game.loop.frame);
     this.armed += delta;
     for (const r of this.rigs) r.update(delta);
     if (this.armed > 300 && (controls.consume('confirm') || controls.consume('attack'))) this.go();

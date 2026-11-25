@@ -106,6 +106,22 @@ export abstract class Fighter implements Body {
     return dmg;
   }
 
+  /** Finish this fighter off no matter what state it is in (used when the boss falls). */
+  kill(dir: 1 | -1): void {
+    if (this.dead) return;
+    this.hp = 0;
+    this.invuln = 0;
+    if (this.state === 'down' || this.state === 'knocked' || this.state === 'thrown') return;
+    this.facing = dir === 1 ? -1 : 1;
+    this.vx = dir * 420;
+    this.vy = 0;
+    this.vz = 620;
+    this.airborne = true;
+    this.gravityScale = 1;
+    this.view.flash();
+    this.setState('knocked', 'knock');
+  }
+
   /** Cannon's throw: this fighter becomes a projectile that bowls over its friends. */
   launchThrown(dir: 1 | -1, speed: number, lift: number, hit: HitDef, selfDmg: number): void {
     this.facing = dir === 1 ? -1 : 1;

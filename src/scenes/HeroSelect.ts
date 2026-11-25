@@ -105,7 +105,7 @@ export class HeroSelect extends Phaser.Scene {
   }
 
   update(_t: number, delta: number): void {
-    controls.update();
+    controls.update(this.game.loop.frame);
     for (const r of this.rigs) r.update(delta);
     if (this.chosen) return;
     if (controls.consume('left')) this.select(this.index - 1);

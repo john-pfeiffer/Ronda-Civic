@@ -43,6 +43,7 @@ async function raster(src: string, w: number, h: number, texts?: TextOverlay[]):
   canvas.width = Math.max(1, Math.ceil(w));
   canvas.height = Math.max(1, Math.ceil(h));
   const ctx = canvas.getContext('2d')!;
+  ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
   if (texts?.length) drawTexts(ctx, texts);
   return canvas;

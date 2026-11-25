@@ -3,13 +3,13 @@
 import Phaser from 'phaser';
 import { fitCamera } from './ui';
 import { ATLAS } from '../art/textures';
-import { FLOOR_BOTTOM, FLOOR_TOP, H, LEVEL_W, MODULE_W, W, WALL_H } from '../config/game';
+import { FLOOR_TOP, H, LEVEL_W, MODULE_W, W, WALL_H } from '../config/game';
 import { GROUND_ORDER, WALL_ORDER } from '../art/backgrounds';
 import { PROPS } from '../art/props';
 import { BOSS, type EnemyId } from '../data/enemies';
 import type { HeroId } from '../data/heroes';
 import { depthToY, LEVEL, type Encounter, type PickupKind, type Spawn } from '../data/level1';
-import { hit, hitTest, radialTest, type Body, type HitDef, type Platform } from '../systems/combat';
+import { hitTest, radialTest, type Body, type HitDef, type Platform } from '../systems/combat';
 import { controls } from '../systems/input';
 import { audio } from '../systems/audio';
 import { BigBoy } from '../entities/BigBoy';
@@ -25,8 +25,6 @@ export interface LevelData {
   checkpoint?: number;
   score?: number;
 }
-
-const KILL = hit({ dmg: 9999, x0: 0, x1: 0, kbx: 500, kbz: 700 });
 
 export class Level extends Phaser.Scene {
   hero!: Hero;
@@ -68,7 +66,6 @@ export class Level extends Phaser.Scene {
   private seed = 12345;
   private far!: Phaser.GameObjects.TileSprite;
   private mid!: Phaser.GameObjects.TileSprite;
-  private lamps: Phaser.GameObjects.Image[] = [];
 
   constructor() {
     super('Level');
@@ -84,7 +81,6 @@ export class Level extends Phaser.Scene {
     this.projectiles = [];
     this.platforms = [];
     this.tokens = new Set();
-    this.lamps = [];
     this.doggy = null;
     this.boss = null;
     this.combo = this.comboT = this.elapsed = 0;
@@ -155,9 +151,9 @@ export class Level extends Phaser.Scene {
       }
     }
 
-    // street lamps passing in front of the camera
-    for (let lx = 700; lx < LEVEL_W * 1.3; lx += 1700) {
-      this.lamps.push(this.add.image(lx, H + 30, ATLAS, 'prop:lamp').setOrigin(0.5, 1).setScrollFactor(1.3, 1).setDepth(6000).setScale(1.1));
+    // street lamps along the kerb, behind the action
+    for (let lx = 760; lx < LEVEL_W - MODULE_W * 2; lx += 1480) {
+      this.add.image(lx, FLOOR_TOP + 4, ATLAS, 'prop:lamp').setOrigin(0.3, 1).setDepth(-45).setScale(0.66);
     }
   }
 
@@ -320,7 +316,7 @@ export class Level extends Phaser.Scene {
     this.victory = true;
     this.score += BOSS.score;
     this.pending = [];
-    for (const e of this.enemies) if (e !== this.boss && e.alive) e.takeHit(KILL, e.x >= this.hero.x ? 1 : -1);
+    this.hero.invuln = 60000;
     audio.music('victory');
     this.sfx('win');
     this.hero.inputLocked = true;
@@ -405,15 +401,15 @@ export class Level extends Phaser.Scene {
     if (Math.abs(want - this.camX) < 0.5) this.camX = want;
     this.furthest = Math.max(this.furthest, this.camX);
     this.cameras.main.setScroll(Math.round(this.camX), 0);
-    this.bounds.left = this.camX + 50;
-    this.bounds.right = this.camX + W - 50;
+    this.bounds.left = this.camX + 80;
+    this.bounds.right = this.camX + W - 80;
     this.far.tilePositionX = this.camX * 0.12;
     this.mid.tilePositionX = this.camX * 0.3;
   }
 
   update(_time: number, delta: number): void {
     const dt = Math.min(delta, 40);
-    controls.update();
+    controls.update(this.game.loop.frame);
     if (this.freeze > 0) {
       this.freeze -= dt;
       return;
@@ -423,6 +419,8 @@ export class Level extends Phaser.Scene {
     if (this.comboT > 0 && (this.comboT -= dt) <= 0) this.combo = 0;
 
     this.hero.update(dt);
+    // once Big Boy is down the rest of his crew goes with him
+    if (this.victory) for (const e of this.enemies) if (e !== this.boss && e.hp > 0) e.kill(e.x >= this.hero.x ? 1 : -1);
     for (const e of this.enemies) e.update(dt);
     for (const p of this.projectiles) p.update(dt);
     for (const p of this.pickups) p.update(dt);
@@ -440,4 +438,3 @@ export class Level extends Phaser.Scene {
   }
 }
 
-export { FLOOR_BOTTOM };

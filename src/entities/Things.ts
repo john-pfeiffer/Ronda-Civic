@@ -178,7 +178,8 @@ export class Doggy {
     switch (this.mode) {
       case 'boxed':
         this.view.play('sit');
-        if (Math.abs(hero.x - this.x) < 230 && Math.abs(hero.y - this.y) < 190) {
+        // anywhere across the street counts, so he cannot be walked past
+        if (Math.abs(hero.x - this.x) < 260) {
           this.found = true;
           this.mode = 'follow';
           this.bubble.destroy();

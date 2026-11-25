@@ -46,7 +46,7 @@ export class GameOver extends Phaser.Scene {
   }
 
   update(_t: number, delta: number): void {
-    controls.update();
+    controls.update(this.game.loop.frame);
     this.armed += delta;
     if (this.armed > 600 && (controls.consume('confirm') || controls.consume('attack'))) this.retry();
   }
@@ -106,7 +106,7 @@ export class Victory extends Phaser.Scene {
   }
 
   update(_t: number, delta: number): void {
-    controls.update();
+    controls.update(this.game.loop.frame);
     this.armed += delta;
     if (this.armed > 1200 && controls.consume('confirm')) this.again();
   }

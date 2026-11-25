@@ -45,6 +45,7 @@ class Controls {
   private prev: Partial<Record<Action, boolean>> = {};
   private now = 0;
   private prevNow = 0;
+  private frame = -1;
 
   constructor() {
     if (typeof window === 'undefined') return;
@@ -66,12 +67,12 @@ class Controls {
   }
 
   /** Call once per frame. */
-  update(): void {
-    const t = performance.now();
+  update(frame: number): void {
     // Several scenes call this in the same frame; only the first call counts.
-    if (t - this.now < 3) return;
+    if (frame === this.frame) return;
+    this.frame = frame;
     this.prevNow = this.now;
-    this.now = t;
+    this.now = performance.now();
     let x = (this.key('ArrowRight', 'KeyD') ? 1 : 0) - (this.key('ArrowLeft', 'KeyA') ? 1 : 0);
     let y = (this.key('ArrowDown', 'KeyS') ? 1 : 0) - (this.key('ArrowUp', 'KeyW') ? 1 : 0);
     const held: Partial<Record<Action, boolean>> = { attack: this.touch.attack, jump: this.touch.jump, special: this.touch.special };
